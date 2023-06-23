@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+    ls-cleaner-ls:
+      image: heartexlabs/label-studio:1.5.0.post0
+      container_name: ls-cleaner-labelstudio
+      ports:
+        - '8082:8080'
+      environment:
+        DJANGO_DB: default
+        POSTGRE_NAME: postgres
+        POSTGRE_USER: postgres
+        POSTGRE_PASSWORD: postgres
+        POSTGRE_PORT: 5432
+        POSTGRE_HOST: ls-cleaner-database
+
+    ls-cleaner-database:
+      image: postgres:12
+      container_name: ls-cleaner-database
+      ports:
+        - '5432:5432'
+#      volumes:
+#        - ./prod_ls.dump:/prod_ls.dump
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
