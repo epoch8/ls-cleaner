@@ -1,26 +1,64 @@
 version: '3.8'
 
 services:
-    ls-cleaner-ls:
-      image: heartexlabs/label-studio:1.5.0.post0
-      container_name: ls-cleaner-labelstudio
+    lscleanerapp:
+      build:
+        dockerfile: ./Dockerfile
+        context: .
+      image: ls-cleaner-app
+      container_name: lscleanerapp
+      env_file: ./.env
+      networks:
+        - ls-cleaner-network
+      depends_on:
+        - lscleanerls
+        - lscleanerdb
+      command: bash -c "python3 ls_cleaner/clean.py"
+      ports:
+        - '8008:81'
+      volumes:
+        - ./ls_cleaner:/app/ls_cleaner
+
+    lscleanerls:
+      image: ghcr.io/epoch8/label-studio/label-studio:1.5.0post.0rq1
+      container_name: lscleanerls
       ports:
         - '8082:8080'
+      networks:
+        - ls-cleaner-network
       environment:
         DJANGO_DB: default
         POSTGRE_NAME: postgres
         POSTGRE_USER: postgres
         POSTGRE_PASSWORD: postgres
         POSTGRE_PORT: 5432
-        POSTGRE_HOST: ls-cleaner-database
+        POSTGRE_HOST: lscleanerdb
+        REDIS_HOST: redis
+        REDIS_PORT: 6379
+        REDIS_DB: 0
 
-    ls-cleaner-database:
+    lscleanerdb:
       image: postgres:12
-      container_name: ls-cleaner-database
+      container_name: lscleanerdb
       ports:
         - '5432:5432'
-#      volumes:
-#        - ./prod_ls.dump:/prod_ls.dump
+      volumes:
+        - ./prod_ls.dump:/prod_ls.dump
       environment:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
+      networks:
+        - ls-cleaner-network
+
+    redis:
+      image: redis
+      container_name: redis
+      command: [ 'redis-server', '--port', '6379' ]
+      ports:
+        - '6379:6379'
+      networks:
+        - ls-cleaner-network
+
+networks:
+  ls-cleaner-network:
+    external: true
