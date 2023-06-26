@@ -54,4 +54,4 @@ for ls_project in ls_projects:
 
 end_time = time.time()
 execution_time = end_time - start_time
-logging.info("Время выполнения: ", execution_time, "секунд")
+logging.info(f"Время выполнения: {execution_time} секунд")
