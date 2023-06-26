@@ -62,7 +62,7 @@ def get_tasks_iter(
                 selected_ids=selected_ids,
                 only_ids=only_ids,
                 page=page,
-                page_size=100
+                page_size=1000
             )
             yield data['tasks']
             page += 1
