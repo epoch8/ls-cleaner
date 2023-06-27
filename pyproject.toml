@@ -4,12 +4,11 @@ version = "0.1.0"
 description = ""
 authors = ["Sultan Zakariya <sultan@epoch8.co>"]
 readme = "README.md"
-packages = [{include = "ls_cleaner"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-label-studio-sdk = "^0.0.28"
+python = ">=3.8, <3.11"
 python-dotenv = "^1.0.0"
+label-studio-sdk = "^0.0.28"
 
 
 [build-system]
