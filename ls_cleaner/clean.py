@@ -20,10 +20,10 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 # Environment variables.
 LS_URL = os.getenv("LS_URL", "http://url-for-labelstudio")
 LS_API_KEY = os.getenv("LS_API_KEY", "TOKEN")
-DAYS_FOR_DELETE = int(os.getenv("DAYS_FOR_DELETE", 7))
+RETENTION_DAYS = int(os.getenv("RETENTION_DAYS", 7))
 
 # Formed variables
-FILTER_DATETIME = (datetime.now().date() - timedelta(days=DAYS_FOR_DELETE)).strftime("%Y-%m-%dT%H:%M:%S.%f%zZ")
+FILTER_DATETIME = (datetime.now().date() - timedelta(days=RETENTION_DAYS)).strftime("%Y-%m-%dT%H:%M:%S.%f%zZ")
 
 # Initialize Label Studio Client.
 ls = Client(url=LS_URL, api_key=LS_API_KEY)
