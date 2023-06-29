@@ -1,4 +1,4 @@
-FROM python:3.9-buster as python-base
+FROM --platform=linux/amd64 python:3.9 as python-base
 
 WORKDIR /app
 
